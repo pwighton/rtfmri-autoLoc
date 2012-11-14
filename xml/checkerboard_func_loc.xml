@@ -1,0 +1,52 @@
+<data>
+
+<!--
+  Creates left and right ROIs for murfi to be used with a fingertapping paradigm
+  Using a functional localizer
+  
+  Inputs:
+     1) 90TR EPI 3mm iso with resolution 72x72x31 under a paragidm of rest/left/rest/right/...
+
+  Outputs:
+     1) left_zstat.nii.gz: ROI for the left hand in the murfi/mask dir
+     2) right_zstat.nii.gz: ROI for the left hand in the murfi/mask dir
+
+Test with
+  ./autoReg.py -f ./xml/checkerboard_func_loc.xml -s checkerboard_func_loc
+
+
+	<receive type="murfi">
+		<xml>EPI_90TR_store__res_72x72x31__spatial_3mmx3mmx3mm.xml</xml>		
+		<outfile filetype="autoreg">EPI_90TR_3mm_iso.nii</outfile>
+	</receive>
+
+	<receive type="murfi">
+		<xml>EPI_1TR_store__res_72x72x31__spatial_3mmx3mmx3mm.xml</xml>		
+		<outfile filetype="autoreg">EPI_1TR_3mm_iso.nii</outfile>
+	</receive>
+
+	<receive type="murfi">
+		<xml>EPI_90TR_store__res_72x72x31__spatial_3mmx3mmx3mm.xml</xml>		
+		<outfile filetype="autoreg">EPI_90TR_3mm_iso.nii</outfile>
+	</receive>
+
+	<roi_gen type="feat">
+		<fsf>checkerboard_90TR_10off+10on.fsf</fsf>
+		<infile filetype="autoreg">EPI_90TR_3mm_iso.nii</infile>
+		<outfile filetype="autoreg" src="thresh_zstat1.nii.gz">check_zstat.nii.gz</outfile>
+	</roi_gen>
+
+-->
+	<math type="fslmaths">
+		<infile filetype="autoreg">check_zstat.nii.gz</infile>
+		<outfile filetype="murfi_mask">check_funcloc.nii.gz</outfile>
+		<datatype>float</datatype>
+		<outdatatype>short</outdatatype>
+		<op flag="-thr">7</op>
+		<op flag="-bin"></op>
+	</math>
+
+<!--
+
+-->
+</data>

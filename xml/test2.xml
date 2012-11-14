@@ -1,0 +1,83 @@
+<data>
+
+<!--
+Resume at any point with: 
+  ./autoReg.py -f ./xml/struct_loc_test.xml -s struct_loc_test_20121103
+-->
+
+<!---
+	<receive type="murfi">
+		<xml>MPRAGE_store__res_128x128x88__spatial_2mmx2mmx2mm.xml</xml>		
+		<outfile filetype="autoreg">MPRAGE_2mm_iso.nii.gz</outfile>
+	</receive>
+
+	<receive type="murfi">
+		<xml>EPI_1TR_store__res_72x72x31__spatial_3mmx3mmx3mm.xml</xml>		
+		<outfile filetype="autoreg">EPI_1TR_3mm_iso.nii</outfile>
+	</receive>
+
+	<register type="flirt">
+		<src filetype="additional">orig.nii.gz</src>
+		<dest filetype="autoreg">MPRAGE_2mm_iso.nii.gz</dest>
+		<out_vol filetype="autoreg">origMPRAGE_in_currMPRAGEspace.nii.gz</out_vol>
+		<out_trans filetype="autoreg">origmprage2currmprage.txt</out_trans>
+		<flirt_dof>-dof 6 -usesqform</flirt_dof>
+		<flirt_search_angles>-searchrx -90 90 -searchry -90 90 -searchrz -90 90</flirt_search_angles>
+		<flirt_cost>-cost corratio</flirt_cost>
+		<flirt_searchcost>-searchcost corratio</flirt_searchcost>
+	</register>
+
+	<register type="flirt">
+		<src filetype="autoreg">MPRAGE_2mm_iso.nii.gz</src>
+		<dest filetype="autoreg">EPI_1TR_3mm_iso.nii</dest>
+		<out_vol filetype="autoreg">MPRAGE_in_EPIspace.nii.gz</out_vol>
+		<out_trans filetype="autoreg">mprage2epi.txt</out_trans>
+		<flirt_dof>-dof 6 -usesqform</flirt_dof>
+		<flirt_search_angles>-searchrx -90 90 -searchry -90 90 -searchrz -90 90</flirt_search_angles>
+		<flirt_cost>-cost corratio</flirt_cost>
+		<flirt_searchcost>-searchcost corratio</flirt_searchcost>
+	</register>
+
+	<transform type="flirt">
+		<src filetype="additional">aparc+aseg.nii.gz</src>
+		<ref filetype="autoreg">MPRAGE_2mm_iso.nii.gz</ref>
+		<out_vol filetype="autoreg">aparc+aseg_in_currMPRAGEspace.nii.gz</out_vol>
+		<trans filetype="autoreg">origmprage2currmprage.txt</trans>
+	</transform>
+
+	<transform type="flirt">
+		<src filetype="autoreg">aparc+aseg_in_currMPRAGEspace.nii.gz</src>
+		<ref filetype="autoreg">EPI_1TR_3mm_iso.nii</ref>
+		<out_vol filetype="autoreg">aparc+aseg_in_EPIspace.nii.gz</out_vol>
+		<trans filetype="autoreg">mprage2epi.txt</trans>
+	</transform>
+
+-->
+
+	<transform type="flirt">
+		<src filetype="autoreg">EPI_1TR_3mm_iso.nii</src>
+		<ref filetype="additional">aparc+aseg.nii.gz</ref>
+		<out_vol filetype="autoreg">EPI_in_aparcspace.nii.gz</out_vol>
+		<trans filetype="autoreg">epi2origmprage.txt</trans>
+	</transform>
+
+	<transform type="flirt">
+		<src filetype="autoreg">left_zstat.nii.gz</src>
+		<ref filetype="additional">aparc+aseg.nii.gz</ref>
+		<out_vol filetype="autoreg">left_zstat_in_aparcspace.nii.gz</out_vol>
+		<trans filetype="autoreg">epi2origmprage.txt</trans>
+	</transform>
+
+	<transform type="flirt">
+		<src filetype="autoreg">right_zstat.nii.gz</src>
+		<ref filetype="additional">aparc+aseg.nii.gz</ref>
+		<out_vol filetype="autoreg">right_zstat_in_aparcspace.nii.gz</out_vol>
+		<trans filetype="autoreg">epi2origmprage.txt</trans>
+	</transform>
+
+<!---
+
+
+-->
+
+</data>

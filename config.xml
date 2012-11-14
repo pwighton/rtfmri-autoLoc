@@ -1,0 +1,72 @@
+<config>
+	<!-- The base directory where AutoReg lives -->	
+	<base_dir>/home/pwighton/AutoReg</base_dir>	
+
+	<!-- Where the subject's data lives -->	
+	<subject_dir>/home/pwighton/AutoReg/subjects</subject_dir>
+
+	<!-- Location where reference data (MNI, etc) is stored -->
+	<ref_dir>/home/pwighton/AutoReg/ref_data</ref_dir>
+
+	<!-- Location where reference data (MNI, etc) is stored -->
+	<extern_dir>/home/pwighton/AutoReg/extern</extern_dir>
+
+	<!-- Location of the murfi xml (gets copied into <murfi_config_dir> when run) 
+        	TODO: Specify what gets overwritten and how
+        -->	
+	<murfi_xml>/home/pwighton/AutoReg/murfi_xml</murfi_xml>
+
+	<!-- Location of the feat template fsf files (gets copied into murfi_data_subdirs/xml when run) 
+        	TODO: Specify what gets overwritten and how
+	-->	
+	<feat_fsf>/home/pwighton/AutoReg/feat_fsf</feat_fsf>
+
+	<!-- Location of the murfi binary -->	
+	<murfi_binary>/usr/local/bin/murfi</murfi_binary>
+
+	<!-- Location of the flirt binary -->	
+	<flirt_binary>/usr/lib/fsl/flirt</flirt_binary>
+
+	<!-- Cofiguration parameters to pass to flirt these can be overridden in 
+             a specific flirt registration block-->
+	<flirt_dof>-dof 12</flirt_dof>
+	<flirt_seartch_angles>-searchrx -90 90 -searchry -90 90 -searchrz -90 90</flirt_seartch_angles>
+	<flirt_cost>-cost mutualinfo</flirt_cost>
+	<flirt_searchcost>-searchcost mutualinfo</flirt_searchcost>
+
+	<!-- Location of the fslmerge binary -->	
+	<fslmerge_binary>/usr/lib/fsl/fslmerge</fslmerge_binary>
+
+	<!-- Location of the fslmerge binary -->	
+	<fslmaths_binary>/usr/lib/fsl/fslmaths</fslmaths_binary>
+
+	<!-- Location of the feat binary -->	
+	<feat_binary>/usr/lib/fsl/feat</feat_binary>
+
+	<!-- Location of the convert_xfm binary -->	
+	<convert_xfm_binary>/usr/lib/fsl/convert_xfm</convert_xfm_binary>
+
+	<!-- Location of the mri_robust_register binary -->	
+	<robust_register_binary>/home/pwighton/Desktop/freesurfer_dev_test/mri_robust_register</robust_register_binary>
+
+	<!-- Cofiguration parameters to pass to mri_robust_register these can be overridden in 
+             a specific registration block-->
+	<robust_register_cost>MI</robust_register_cost>
+	<robust_register_sensitivity>--satit</robust_register_sensitivity>
+
+	<!-- Port to broadcast our results on -->	
+	<broadcast_port>15002</broadcast_port>
+
+        <!--====== Prolly never have to change anything below here =========-->
+	<!-- Subdirectories to be created under $subject_dir/$subject -->	
+	<autoreg_data_dir>autoreg_data</autoreg_data_dir>
+	<log_dir>log</log_dir>
+	<additional_dir>additional_data</additional_dir>
+	<murfi_config_dir>murfi_config</murfi_config_dir>
+	<feat_config_dir>feat_config</feat_config_dir>
+	<feat_data_dir>feat_data</feat_data_dir>
+	<murfi_data_dir>murfi_data</murfi_data_dir>
+	<murfi_data_subdirs>img img/4d log mask xfm xml</murfi_data_subdirs>
+</config>
+
+

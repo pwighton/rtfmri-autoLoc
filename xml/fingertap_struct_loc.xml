@@ -1,0 +1,162 @@
+<data>
+
+
+<!--
+  Creates left and right ROIs for murfi to be used with a fingertapping paradigm
+  Using a functional localizer, constrained by pre-existing masks of the motor 
+  cortices
+  
+  Inputs:
+     1) 2mm iso MPRAGE with resolution 128x128x128
+     2) 1TR EPI 3mm iso with resolution 72x72x31
+     3) 90TR EPI 3mm iso with resolution 72x72x31 under a paragidm of rest/left/rest/right/...
+     4) Previously acquired MPRAGE (additional_data/orig.nii.gz)
+     5) Pre-existing left and right motor cortex maps created overtop of previously acquired MPRAGE
+          (additional_data/ftmask_left.nii.gz + ftmask_right.nii.gz)
+
+  Outputs:
+     1) left_zstat.nii.gz: ROI for the left hand in the murfi/mask dir
+     2) roi_zstat.nii.gz:  ROI for the left hand in the murfi/mask dir
+
+Resume at any point with: 
+  ./autoReg.py -f ./xml/fingertap_func+struct_loc.xml -s fingertap_func+struct_loc
+-->
+
+<!--
+	<receive type="murfi">
+		<xml>MPRAGE_store__res_128x128x88__spatial_2mmx2mmx2mm.xml</xml>		
+		<outfile filetype="autoreg">MPRAGE_2mm_iso.nii.gz</outfile>
+	</receive>
+
+	<receive type="murfi">
+		<xml>EPI_1TR_store__res_72x72x31__spatial_3mmx3mmx3mm.xml</xml>		
+		<outfile filetype="autoreg">EPI_1TR_3mm_iso.nii</outfile>
+	</receive>
+
+	<register type="flirt">
+		<src filetype="additional">orig.nii.gz</src>
+		<dest filetype="autoreg">MPRAGE_2mm_iso.nii.gz</dest>
+		<out_vol filetype="autoreg">origMPRAGE_in_currMPRAGEspace.nii.gz</out_vol>
+		<out_trans filetype="autoreg">origmprage2currmprage.txt</out_trans>
+		<flirt_dof>-dof 6 -usesqform</flirt_dof>
+		<flirt_search_angles>-searchrx -90 90 -searchry -90 90 -searchrz -90 90</flirt_search_angles>
+		<flirt_cost>-cost corratio</flirt_cost>
+		<flirt_searchcost>-searchcost corratio</flirt_searchcost>
+	</register>
+
+	<register type="flirt">
+		<src filetype="autoreg">MPRAGE_2mm_iso.nii.gz</src>
+		<dest filetype="autoreg">EPI_1TR_3mm_iso.nii</dest>
+		<out_vol filetype="autoreg">MPRAGE_in_EPIspace.nii.gz</out_vol>
+		<out_trans filetype="autoreg">mprage2epi.txt</out_trans>
+		<flirt_dof>-dof 6 -usesqform</flirt_dof>
+		<flirt_search_angles>-searchrx -90 90 -searchry -90 90 -searchrz -90 90</flirt_search_angles>
+		<flirt_cost>-cost corratio</flirt_cost>
+		<flirt_searchcost>-searchcost corratio</flirt_searchcost>
+	</register>
+
+	<concat type="convert_xfm">
+		<first filetype="autoreg">origmprage2currmprage.txt</first>		
+		<second filetype="autoreg">mprage2epi.txt</second>
+		<dest filetype="autoreg">origmprage2epi.txt</dest>		
+	</concat>
+
+	<transform type="flirt">
+		<src filetype="additional">ftmask_left.nii.gz</src>
+		<ref filetype="autoreg">EPI_1TR_3mm_iso.nii</ref>
+		<out_vol filetype="autoreg">ftmask_left_EPIspace.nii.gz</out_vol>
+		<trans filetype="autoreg">origmprage2epi.txt</trans>
+                <comment>
+		These are HUGE masks created using both pre and post central gyri
+                And convolving the crap out of them
+                </comment>
+	</transform>
+
+	<transform type="flirt">
+		<src filetype="additional">ftmask_right.nii.gz</src>
+		<ref filetype="autoreg">EPI_1TR_3mm_iso.nii</ref>
+		<out_vol filetype="autoreg">ftmask_right_EPIspace.nii.gz</out_vol>
+		<trans filetype="autoreg">origmprage2epi.txt</trans>
+                <comment>
+		These are HUGE masks created using both pre and post central gyri
+                And convolving the crap out of them
+                </comment>
+	</transform>
+
+	<transform type="flirt">
+		<src filetype="additional">ftmask_right2.nii.gz</src>
+		<ref filetype="autoreg">EPI_1TR_3mm_iso.nii</ref>
+		<out_vol filetype="autoreg">ftmask_right2_EPIspace.nii.gz</out_vol>
+		<trans filetype="autoreg">origmprage2epi.txt</trans>
+	</transform>
+
+	<transform type="flirt">
+		<src filetype="additional">ftmask_left2.nii.gz</src>
+		<ref filetype="autoreg">EPI_1TR_3mm_iso.nii</ref>
+		<out_vol filetype="autoreg">ftmask_left2_EPIspace.nii.gz</out_vol>
+		<trans filetype="autoreg">origmprage2epi.txt</trans>
+	</transform>
+-->
+
+	<math type="fslmaths">
+		<infile filetype="autoreg">ftmask_right2_EPIspace.nii.gz</infile>
+		<outfile filetype="murfi_mask">ftmask_right_structloc.nii.gz</outfile>
+		<datatype>float</datatype>
+		<outdatatype>short</outdatatype>
+		<op flag="-thr">0.3</op>
+		<op flag="-bin"></op>
+	</math>
+
+	<math type="fslmaths">
+		<infile filetype="autoreg">ftmask_left2_EPIspace.nii.gz</infile>
+		<outfile filetype="murfi_mask">ftmask_left_structloc.nii.gz</outfile>
+		<datatype>float</datatype>
+		<outdatatype>short</outdatatype>
+		<op flag="-thr">0.3</op>
+		<op flag="-bin"></op>
+	</math>
+
+	<math type="fslmaths">
+		<infile filetype="autoreg">left_zstat.nii.gz</infile>
+		<outfile filetype="murfi_mask">left_fingertap_funcloc.nii.gz</outfile>
+		<datatype>float</datatype>
+		<outdatatype>short</outdatatype>
+		<op flag="-thr">5</op>
+		<op flag="-bin"></op>
+	</math>
+
+	<math type="fslmaths">
+		<infile filetype="autoreg">right_zstat.nii.gz</infile>
+		<outfile filetype="murfi_mask">right_fingertap_funcloc.nii.gz</outfile>
+		<datatype>float</datatype>
+		<outdatatype>short</outdatatype>
+		<op flag="-thr">5</op>
+		<op flag="-bin"></op>
+	</math>
+
+	<math type="fslmaths">
+		<infile filetype="autoreg">left_zstat.nii.gz</infile>
+		<outfile filetype="murfi_mask">left_fingertap_struct+funcloc.nii.gz</outfile>
+		<datatype>float</datatype>
+		<outdatatype>short</outdatatype>
+		<op flag="-mas" filetype="autoreg">ftmask_left2_EPIspace.nii.gz</op>
+		<op flag="-thr">5</op>
+		<op flag="-bin"></op>
+	</math>
+
+	<math type="fslmaths">
+		<infile filetype="autoreg">right_zstat.nii.gz</infile>
+		<outfile filetype="murfi_mask">right_fingertap_struct+funcloc.nii.gz</outfile>
+		<datatype>float</datatype>
+		<outdatatype>short</outdatatype>
+		<op flag="-mas" filetype="autoreg">ftmask_right2_EPIspace.nii.gz</op>
+		<op flag="-thr">5</op>
+		<op flag="-bin"></op>
+	</math>
+
+<!--
+
+
+-->
+
+</data>

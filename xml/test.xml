@@ -1,0 +1,105 @@
+<data subject="test_20121019">
+
+
+<!-- 
+  RECEIVE BLOCK CONFIGURATION:
+     type: 
+        murfi:  Uses murfi to receive the data from the VSEND functor
+     parameters:
+        xml:     xml file used to configure murfi.  REQUIRED
+                 should be in <murfi_xml> defined in config.xml
+                 file is configured for the specific subject, then copied
+                 into the subject specific <murfi_data_dir>/xml dir
+	outfile: Received file is copied from <murfi_data_dir>/img to 
+                 <autoreg_data_dir>
+-->
+
+<!-- 
+  REGISTER BLOCK CONFIGURATION:
+     type: 
+        flirt:  Uses flirt to register volumes
+	robust: Uses mri_robust_register to register volumes
+     parameters:
+        src:       The source volume       REQUIRED
+	dest:	   The destination volume  REQUIRED
+	out_vol:   The 
+	out_trans: Text file representing containing the 4x4 matrix 
+                   representing the affine transform
+
+	* <src>, <dest> <out_vol> and <out_trans> takes a parameter 'filetype' which defines where
+	  the script will look for the file.  'type' can be one of:
+                  - autoreg:    looks for the file in the subject's <autoreg_data_dir> (defined in config.xml)
+		  - ref:        looks for the file in the           <ref_dir>          (defined in config.xml)
+		  - extern:     looks for the file in the           <extern_dir>       (defined in config.xml)
+		  - additional: looks for the file in the subject's <additional_dir>   (defined in config.xml)
+		  - murfi_img:  looks for the file in the subject's <murfi_data_dir>/img
+		  - murfi_mask: looks for the file in the subject's <murfi_data_dir>/mask
+		  - full:       assumes the full path to the file is given
+
+     flirt-specific parameters (can de defined here or config.xml, if defined here overrides config.xml):
+	flirt_dof:
+	flirt_seartch_angles:
+-->
+
+<!-- 
+  EXTERN BLOCK CONFIGURATION:
+
+-->
+
+<!--
+	<receive type="murfi">
+		<xml>MPRAGE_store__res_128x128x88__spatial_2mmx2mmx2mm.xml</xml>		
+		<outfile filetype="autoreg">MPRAGE_2mm_iso.nii</outfile>
+	</receive>
+
+	<receive type="murfi">
+		<xml>EPI_1TR_store__res_72x72x25__spatial_3mmx3mmx3mm.xml</xml>		
+		<outfile filetype="autoreg">EPI_1TR_3mm_iso.nii</outfile>
+	</receive>
+
+	<register type="flirt">
+		<src filetype="ref">MNI152_T1_2mm.nii.gz</src>
+		<dest filetype="autoreg">MPRAGE_2mm_iso.nii</dest>
+		<out_vol filetype="autoreg">MNI_in_MPRAGEspace.nii.gz</out_vol>
+		<out_trans filetype="autoreg">mni2mprage.txt</out_trans>
+		<flirt_dof>-dof 12</flirt_dof>
+		<flirt_seartch_angles>-searchrx -90 90 -searchry -90 90 -searchrz -90 90</flirt_seartch_angles>
+		<flirt_cost>-cost mutualinfo</flirt_cost>
+		<flirt_searchcost>-searchcost mutualinfo</flirt_searchcost>
+	</register>
+-->
+	<register type="flirt">
+		<src filetype="autoreg">MPRAGE_2mm_iso.nii</src>
+		<dest filetype="autoreg">EPI_1TR_3mm_iso.nii</dest>
+		<out_vol filetype="autoreg">MPRAGE_in_EPIspace.nii.gz</out_vol>
+		<out_trans fileype="autoreg">mprage2epi.txt</out_trans>
+		<flirt_dof>-dof 6 -usesqform</flirt_dof>
+		<flirt_search_angles>-searchrx -90 90 -searchry -90 90 -searchrz -90 90</flirt_search_angles>
+		<flirt_cost>-cost corratio</flirt_cost>
+		<flirt_searchcost>-searchcost corratio</flirt_searchcost>
+	</register>
+
+
+	<register type="flirt">
+		<src filetype="autoreg">EPI_1TR_3mm_iso.nii</src>
+		<dest filetype="autoreg">MPRAGE_2mm_iso.nii</dest>
+		<out_vol filetype="autoreg">EPI_in_MPRAGEspace.nii.gz</out_vol>
+		<out_trans filetype="autoreg">epi2mprage.txt</out_trans>
+		<flirt_dof>-dof 6 -usesqform</flirt_dof>
+		<flirt_search_angles>-searchrx -90 90 -searchry -90 90 -searchrz -90 90</flirt_search_angles>
+		<flirt_cost>-cost corratio</flirt_cost>
+		<flirt_searchcost>-searchcost corratio</flirt_searchcost>
+	</register>
+
+
+<!--
+	<register type="robust">
+		<src filetype="full">MNI152_T1_2mm.nii.gz</src>
+		<dest filetype="murfi_mask">MPRAGE_2mm_iso.nii</dest>
+		<outfile filetype="autoreg">mprage2mni.txt</outfile>
+	</register>
+
+	<broadcast>
+	</broadcast>
+-->
+</data>

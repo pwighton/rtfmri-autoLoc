@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- info about entire study subject name, data dir, etc.. -->
+<study name="craving">
+  <option name="subjectsDir"> ___DATADIR___ </option>
+  <option name="confDir"> ___XMLDIR___ </option>
+  <option name="softwareDir"> ___MURFIDIR___ </option>
+
+  <subject>
+    <option name="name"> ___SUBNAME___ </option>
+  </subject>
+  <terminal>
+    <option name="verbose"> true </option>
+    <option name="debug"> true </option>
+  </terminal>
+  <log>
+    <option name="filename"> log.rtl </option>
+    <option name="disabled"> false </option>
+  </log>
+  <errlog>
+    <option name="filename"> log_err.rtl </option>
+    <option name="disabled"> false </option>
+  </errlog>  
+</study>
+
+<!-- setup for connecting to and receiving images from the MRI scanner -->
+<scanner>
+  <!-- general options -->
+  <option name="disabled">      false </option>
+  <option name="receiveImages"> true </option>
+  
+  <option name="saveImages">    true </option>
+  
+  <!-- acquisition type -->
+  <!-- scan type ?? -->
+  <option name="imageType">     mprage </option>
+  
+  <!-- receiving parameters -->
+  <option name="port">          15000 </option>
+
+  <!-- if moco is enabled on scanner -->
+  <option name="onlyReadMoCo">  false </option>
+
+  <!-- if scanner sends mosaic data -->
+  <option name="unmosaic">      false </option>
+  
+  <!-- lifed straight from scanner MAKE SURE ITS RIGHT-->
+  <!-- try cat ./seq.info on sample data -->
+  <option name="tr"> 2 </option>
+  <option name="measurements">     1 </option> 
+  <option name="matrixSize">     128 </option>
+  <option name="slices">          88 </option>
+  <option name="voxdim1">          2 </option>
+  <option name="voxdim2">          2 </option>
+  <option name="voxdim3">          2 </option>
+  
+  <!-- PW: This is importnat for MPRAGE's or the vox2ras matrix will be set incorrectly -->
+  <option name="sliceGap">         0 </option>
+
+</scanner>
+
+
