@@ -166,6 +166,7 @@ def parseReceiveBlock(block):
 		# murfi_xml_custom = murfi_xml_custom.replace("___SUBNAME___", subject['name'])
 		murfi_xml_custom = murfi_xml_custom.replace("___SUBNAME___", config.find('murfi_data_dir').text)
 		murfi_xml_custom = murfi_xml_custom.replace("___DATADIR___", subject['subject_dir'])		
+		murfi_xml_custom = murfi_xml_custom.replace("___MURFIDIR___", config.find('murfi_dir').text)
 
 		# Write it to file
 		print "    ---> Writing murfi config xml to: ", murfi_xml_outfilename
@@ -236,9 +237,6 @@ def parseRegisterBlock(block):
 	print "    ---> Destination file: ", dest
 	print "    ---> Output volume:    ", out_vol
 	print "    ---> Destination file: ", out_trans
-
-
-#${FSLBIN}/flirt ${FLIRT_SEARCH_ANGLES} ${FLIRT_DOF} -in ${REF_BRAIN} -ref ${SUBDIR_IMG4D}${FD_FILE} -omat ${SUBDIR_FSL}#${FLIRT_OUT} -out ${SUBDIR_FSL}${FLIRT_FILE_OUT} -cost mutualinfo -searchcost mutualinfo
 
 	if block.get('type')=="flirt":
 		# TODO: Clean up.  Use os.path.join()
@@ -360,9 +358,10 @@ def parseMathBlock(block):
 			fslmaths_exec.append('-odt')
 			fslmaths_exec.append(block.find('outdatatype').text)
 
-		print "    ---> Executing fslmaths"
-		with open(os.devnull, "w") as devnull:				
-			subprocess.call(fslmaths_exec, stdout=devnull, stderr=devnull)
+		print "    ---> Executing fslmaths:", fslmaths_exec
+		subprocess.call(fslmaths_exec)
+		#with open(os.devnull, "w") as devnull:				
+			#subprocess.call(fslmaths_exec, stdout=devnull, stderr=devnull)
 
 	else:
 		print "    !!-> Unrecognized MathBlock type: ", block.get('type')
@@ -424,6 +423,40 @@ def parseConcatBlock(block):
 	else:
 		print "    !!-> Unrecognized RegisterBlock type: ", block.get('type')
 
+def parseSkullstripBlock(block):
+	infile = getFullPathFromXMLblock(block.find('infile'))
+	print "    ---> infile is", infile
+
+	outfile = getFullPathFromXMLblock(block.find('outfile'))
+	print "    ---> outfile is", outfile
+
+	if block.get('type')=="bet":
+		convert_exec = [config.find('bet_binary').text]
+		convert_exec.append(infile)
+		convert_exec.append(outfile)
+		convert_exec.append(getFullPathFromXMLblock(block.find('options')))
+
+		print "    ---> Executing bet", convert_exec
+		with open(os.devnull, "w") as devnull:				
+			subprocess.call(convert_exec, stdout=devnull, stderr=devnull)
+
+	else:
+		print "    !!-> Unrecognized RegisterBlock type: ", block.get('type')
+
+def parseVisBlock(block):
+	if block.get('type')=="fslview":
+		fslview_exec = [config.find('fslview_binary').text]
+		for f in block.findall('file'):
+			filename = getFullPathFromXMLblock(f)
+			fslview_exec.append(filename)
+		
+		print "    ---> Executing fslview", fslview_exec
+		with open(os.devnull, "w") as devnull:				
+			subprocess.call(fslview_exec, stdout=devnull, stderr=devnull)
+	
+	else:
+		print "    !!-> Unrecognized RegisterBlock type: ", block.get('type')
+
 def main():
 
 	# Get command line arguments
@@ -458,6 +491,12 @@ def main():
 			elif block.tag=="concat":
 				print "  ---> Parsing block ", num_blocks, "as a 'concat' block..."
 				parseConcatBlock(block)
+			elif block.tag=="skullstrip":
+				print "  ---> Parsing block ", num_blocks, "as a 'skullstrip' block..."
+				parseSkullstripBlock(block)
+			elif block.tag=="vis":
+				print "  ---> Parsing block ", num_blocks, "as a 'vis' block..."
+				parseVisBlock(block)
 			else:
 				print "  ---> block", num_blocks, "has an unrecognized tag: ", block.tag, " skipping.."
 			print "  ---> Done parsing node ", num_blocks

@@ -1,31 +1,34 @@
 <config>
 	<!-- The base directory where AutoReg lives -->	
-	<base_dir>/home/pwighton/AutoReg</base_dir>	
+	<base_dir>/home/rtfmri/AutoReg</base_dir>	
 
 	<!-- Where the subject's data lives -->	
-	<subject_dir>/home/pwighton/AutoReg/subjects</subject_dir>
+	<subject_dir>/home/rtfmri/AutoReg/subjects</subject_dir>
 
 	<!-- Location where reference data (MNI, etc) is stored -->
-	<ref_dir>/home/pwighton/AutoReg/ref_data</ref_dir>
+	<ref_dir>/home/rtfmri/AutoReg/ref_data</ref_dir>
 
 	<!-- Location where reference data (MNI, etc) is stored -->
-	<extern_dir>/home/pwighton/AutoReg/extern</extern_dir>
+	<extern_dir>/home/rtfmri/AutoReg/extern</extern_dir>
 
 	<!-- Location of the murfi xml (gets copied into <murfi_config_dir> when run) 
         	TODO: Specify what gets overwritten and how
         -->	
-	<murfi_xml>/home/pwighton/AutoReg/murfi_xml</murfi_xml>
+	<murfi_xml>/home/rtfmri/AutoReg/murfi_xml</murfi_xml>
 
 	<!-- Location of the feat template fsf files (gets copied into murfi_data_subdirs/xml when run) 
         	TODO: Specify what gets overwritten and how
 	-->	
-	<feat_fsf>/home/pwighton/AutoReg/feat_fsf</feat_fsf>
+	<feat_fsf>/home/rtfmri/AutoReg/feat_fsf</feat_fsf>
 
 	<!-- Location of the murfi binary -->	
 	<murfi_binary>/usr/local/bin/murfi</murfi_binary>
 
+	<!-- Location of the murfi directory -->	
+	<murfi_dir>/home/rtfmri/murfi_dev</murfi_dir>
+
 	<!-- Location of the flirt binary -->	
-	<flirt_binary>/usr/lib/fsl/flirt</flirt_binary>
+	<flirt_binary>/usr/lib/fsl/5.0/flirt</flirt_binary>
 
 	<!-- Cofiguration parameters to pass to flirt these can be overridden in 
              a specific flirt registration block-->
@@ -35,16 +38,22 @@
 	<flirt_searchcost>-searchcost mutualinfo</flirt_searchcost>
 
 	<!-- Location of the fslmerge binary -->	
-	<fslmerge_binary>/usr/lib/fsl/fslmerge</fslmerge_binary>
+	<fslmerge_binary>/usr/lib/fsl/5.0/fslmerge</fslmerge_binary>
 
 	<!-- Location of the fslmerge binary -->	
-	<fslmaths_binary>/usr/lib/fsl/fslmaths</fslmaths_binary>
+	<fslmaths_binary>/usr/lib/fsl/5.0/fslmaths</fslmaths_binary>
 
 	<!-- Location of the feat binary -->	
-	<feat_binary>/usr/lib/fsl/feat</feat_binary>
+	<feat_binary>/usr/lib/fsl/5.0/feat</feat_binary>
+
+	<!-- Location of the bet binary -->	
+	<bet_binary>/usr/lib/fsl/5.0/bet</bet_binary>
+
+	<!-- Location of the fslview binary -->	
+	<fslview_binary>/usr/bin/fslview</fslview_binary>
 
 	<!-- Location of the convert_xfm binary -->	
-	<convert_xfm_binary>/usr/lib/fsl/convert_xfm</convert_xfm_binary>
+	<convert_xfm_binary>/usr/lib/fsl/5.0/convert_xfm</convert_xfm_binary>
 
 	<!-- Location of the mri_robust_register binary -->	
 	<robust_register_binary>/home/pwighton/Desktop/freesurfer_dev_test/mri_robust_register</robust_register_binary>

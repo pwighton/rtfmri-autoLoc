@@ -14,16 +14,7 @@
 Test with
   ./autoReg.py -f ./xml/checkerboard_func_loc.xml -s checkerboard_func_loc
 
-
-	<receive type="murfi">
-		<xml>EPI_90TR_store__res_72x72x31__spatial_3mmx3mmx3mm.xml</xml>		
-		<outfile filetype="autoreg">EPI_90TR_3mm_iso.nii</outfile>
-	</receive>
-
-	<receive type="murfi">
-		<xml>EPI_1TR_store__res_72x72x31__spatial_3mmx3mmx3mm.xml</xml>		
-		<outfile filetype="autoreg">EPI_1TR_3mm_iso.nii</outfile>
-	</receive>
+-->
 
 	<receive type="murfi">
 		<xml>EPI_90TR_store__res_72x72x31__spatial_3mmx3mmx3mm.xml</xml>		
@@ -36,7 +27,6 @@ Test with
 		<outfile filetype="autoreg" src="thresh_zstat1.nii.gz">check_zstat.nii.gz</outfile>
 	</roi_gen>
 
--->
 	<math type="fslmaths">
 		<infile filetype="autoreg">check_zstat.nii.gz</infile>
 		<outfile filetype="murfi_mask">check_funcloc.nii.gz</outfile>

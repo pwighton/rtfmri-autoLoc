@@ -1,0 +1,114 @@
+<data>
+
+<!--
+Resume at any point with: 
+  ./autoReg.py -f ./xml/struct_loc_test.xml -s struct_loc_test_20121103
+-->
+
+<!--
+	<receive type="murfi">
+		<xml>MPRAGE_store__res_128x128x88__spatial_2mmx2mmx2mm.xml</xml>		
+		<outfile filetype="autoreg">MPRAGE_2mm_iso.nii.gz</outfile>
+                <comment>Receive and save the MPRAGE</comment>
+	</receive>
+
+	<receive type="murfi">
+		<xml>EPI_1TR_store__res_72x72x25__spatial_3mmx3mmx3mm.xml</xml>		
+		<outfile filetype="autoreg">EPI_1TR_3mm_iso.nii</outfile>
+                <comment>Receive and save the 1TR EPI</comment>
+	</receive>
+
+	<register type="flirt">
+		<src filetype="ref">MNI152_T1_1mm.nii.gz</src>
+		<dest filetype="autoreg">MPRAGE_2mm_iso.nii</dest>
+		<out_vol filetype="autoreg">MNI_in_MPRAGEspace.nii.gz</out_vol>
+		<out_trans filetype="autoreg">mni2mprage.txt</out_trans>
+		<flirt_dof>-dof 12</flirt_dof>
+		<flirt_seartch_angles>-searchrx -90 90 -searchry -90 90 -searchrz -90 90</flirt_seartch_angles>
+		<flirt_cost>-cost mutualinfo</flirt_cost>
+		<flirt_searchcost>-searchcost mutualinfo</flirt_searchcost>
+		<comment>Register MNI to MPRAGE</comment>
+	</register>
+
+	<register type="flirt">
+		<src filetype="autoreg">MPRAGE_2mm_iso.nii.gz</src>
+		<dest filetype="autoreg">EPI_1TR_3mm_iso.nii.gz</dest>
+		<out_vol filetype="autoreg">MPRAGE_in_EPIspace.nii.gz</out_vol>
+		<out_trans filetype="autoreg">mprage2epi.txt</out_trans>
+		<flirt_dof>-dof 6 -usesqform</flirt_dof>
+		<flirt_search_angles>-searchrx -90 90 -searchry -90 90 -searchrz -90 90</flirt_search_angles>
+		<flirt_cost>-cost corratio</flirt_cost>
+		<flirt_searchcost>-searchcost corratio</flirt_searchcost>
+		<comment>Register MPRAGE to EPI</comment>
+	</register>
+
+	<concat type="convert_xfm">
+		<first filetype="autoreg">mni2mprage.txt</first>		
+		<second filetype="autoreg">mprage2epi.txt</second>
+		<dest filetype="autoreg">mni2epi.txt</dest>
+		<comment>Create xform from MNI to EPI</comment>		
+	</concat>
+
+	<transform type="flirt">
+		<src filetype="ref">Left_Accumbens-area.nii.gz</src>
+		<ref filetype="autoreg">EPI_1TR_3mm_iso.nii.gz</ref>
+		<out_vol filetype="autoreg">NAC_left_EPIspace.nii.gz</out_vol>
+		<trans filetype="autoreg">mni2epi.txt</trans>
+		<comment>Transform Left NAC from MNI to EPI</comment>
+	</transform>
+
+	<transform type="flirt">
+		<src filetype="ref">Right_Accumbens-area.nii.gz</src>
+		<ref filetype="autoreg">EPI_1TR_3mm_iso.nii.gz</ref>
+		<out_vol filetype="autoreg">NAC_right_EPIspace.nii.gz</out_vol>
+		<trans filetype="autoreg">mni2epi.txt</trans>
+		<comment>Transform Right NAC from MNI to EPI</comment>
+	</transform>
+
+	<math type="fslmaths">
+		<infile filetype="autoreg">NAC_right_EPIspace.nii.gz</infile>
+		<outfile filetype="murfi_mask">active-mask.nii.gz</outfile>
+		<datatype>float</datatype>
+		<outdatatype>short</outdatatype>
+		<op flag="-add" filetype="autoreg">NAC_left_EPIspace.nii.gz</op>
+		<op flag="-bin"></op>
+		<comment>Merge Left/Right NACs in EPI space and save to mufi mask dir</comment>
+	</math>
+
+	<skullstrip type="bet">
+		<infile filetype="autoreg">EPI_1TR_3mm_iso.nii.gz</infile>		
+		<outfile filetype="autoreg">EPI_1TR_3mm_iso_skullstrip.nii.gz</outfile>
+		<options>-m</options>	
+		<comment>Strip the skull of the EPI</comment>		
+	</skullstrip>
+
+	<math type="fslmaths">
+		<infile filetype="murfi_mask">active-mask.nii.gz</infile>
+		<outfile filetype="autoreg">NAC_both_EPIspace_dilated.nii.gz</outfile>
+		<datatype>short</datatype>
+		<outdatatype>short</outdatatype>
+		<op flag="-kernel">3D</op>
+		<comment>PW 2013/01/25: For some reason <op flag="-kernel">sphere 4</op> doesn't work</comment>
+		<op flag="-dilM"></op>
+		<comment>Dialate NAC mask (before we subtract from whole brain mask to make ref mask)</comment>
+	</math>
+
+	<math type="fslmaths">
+		<infile filetype="autoreg">EPI_1TR_3mm_iso_brainmask_mask.nii.gz</infile>
+		<outfile filetype="murfi_mask">reference-mask.nii.gz</outfile>
+		<outdatatype>short</outdatatype>
+		<op flag="-sub" filetype="autoreg">NAC_both_EPIspace_dilated.nii.gz</op>
+		<op flag="-bin"></op>
+		<comment>Create reference mask</comment>
+	</math>
+-->
+
+	<vis type="fslview">
+		<file filetype="autoreg">MPRAGE_in_EPIspace.nii.gz</file>
+		<file filetype="autoreg">EPI_1TR_3mm_iso.nii.gz</file>
+		<file filetype="murfi_mask">active-mask.nii.gz</file>
+		<file filetype="murfi_mask">reference-mask.nii.gz</file>		
+		<comment>Visualize the result</comment>
+	</vis>
+
+</data>
