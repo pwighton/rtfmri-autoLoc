@@ -1,0 +1,11 @@
+<data>
+
+<!--
+Resume at any point with: 
+  ./autoReg.py -f ./xml/struct_loc_test.xml -s struct_loc_test_20121103
+-->
+	<receive type="murfi">
+		<xml>EPI_144TR_rtFoodVisit1__res_72x72x31__spatial_3mmx3mmx3mm.xml</xml>		
+		<outfile filetype="autoreg">run1_UP.nii.gz</outfile>
+	</receive>
+</data>

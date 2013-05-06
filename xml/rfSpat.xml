@@ -1,0 +1,39 @@
+<data>
+
+<!--
+Resume at any point with: 
+  ./autoReg.py -f ./xml/struct_loc_test.xml -s struct_loc_test_20121103
+
+HOWTO:
+ - Initialize the subject's directory:
+     ./autoReg.py -i -s subject_name -f ./xml/slicePrescription.xml
+ - Copy MEMPRAGE reference volume to:
+     ./AutoReg/subjects/subject_name/additional_data/MPRAGE_ref_vol.nii.gz
+
+Reference Volume should be:
+
+-->
+	<receive type="murfi">
+		<xml>MPRAGE_store__res_128x128x88__spatial_2mmx2mmx2mm.xml</xml>		
+		<outfile filetype="autoreg">MPRAGE_2mm_iso_tra.nii.gz</outfile>
+                <comment>Receive and save the MPRAGE</comment>
+	</receive>
+
+	<bias_correct type="mri_nu_correct">
+		<src filetype="autoreg">MPRAGE_2mm_iso_tra.nii.gz</src>
+		<dest filetype="autoreg">MPRAGE_2mm_iso_tra__nu.nii.gz</dest>		
+	</bias_correct>
+
+	<register type="robust">
+		<comment>Register MNI to MPRAGE</comment>
+		<src filetype="autoreg">MPRAGE_2mm_iso_tra__nu.nii.gz</src>
+		<dest filetype="additional">orig.mgz</dest>
+		<out_vol filetype="autoreg">MPRAGE_2mm_iso_tra__nu_origspace.nii.gz</out_vol>
+		<out_trans filetype="autoreg">new2orig_tra.lta</out_trans>
+		<rr_flags>--iscale --satit</rr_flags>		
+	</register>
+
+	<fov type="update_with_lta">
+		<src filetype="autoreg">new2orig_tra.lta</src>
+	</fov>
+</data>
