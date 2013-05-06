@@ -5,7 +5,6 @@ Resume at any point with:
   ./autoReg.py -f ./xml/struct_loc_test.xml -s struct_loc_test_20121103
 -->
 
-<!--
 	<receive type="murfi">
 		<xml>MPRAGE_store__res_128x128x88__spatial_2mmx2mmx2mm.xml</xml>		
 		<outfile filetype="autoreg">MPRAGE_2mm_iso.nii.gz</outfile>
@@ -13,7 +12,8 @@ Resume at any point with:
 	</receive>
 
 	<receive type="murfi">
-		<xml>EPI_1TR_store__res_72x72x25__spatial_3mmx3mmx3mm.xml</xml>		
+                <xml>EPI_1TR_store__res_72x72x31__spatial_3mmx3mmx3mm.xml</xml>		
+                <xml_old>EPI_1TR_store__res_72x72x25__spatial_3mmx3mmx3mm.xml</xml_old>		
 		<outfile filetype="autoreg">EPI_1TR_3mm_iso.nii</outfile>
                 <comment>Receive and save the 1TR EPI</comment>
 	</receive>
@@ -94,14 +94,13 @@ Resume at any point with:
 	</math>
 
 	<math type="fslmaths">
-		<infile filetype="autoreg">EPI_1TR_3mm_iso_brainmask_mask.nii.gz</infile>
+		<infile filetype="autoreg">EPI_1TR_3mm_iso_skullstrip_mask.nii.gz</infile>
 		<outfile filetype="murfi_mask">reference-mask.nii.gz</outfile>
 		<outdatatype>short</outdatatype>
 		<op flag="-sub" filetype="autoreg">NAC_both_EPIspace_dilated.nii.gz</op>
 		<op flag="-bin"></op>
 		<comment>Create reference mask</comment>
 	</math>
--->
 
 	<vis type="fslview">
 		<file filetype="autoreg">MPRAGE_in_EPIspace.nii.gz</file>
@@ -110,5 +109,4 @@ Resume at any point with:
 		<file filetype="murfi_mask">reference-mask.nii.gz</file>		
 		<comment>Visualize the result</comment>
 	</vis>
-
 </data>

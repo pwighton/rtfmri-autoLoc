@@ -46,7 +46,8 @@ def getOptions():
 	# Parse config file and make the results available globally
 	global config
 	config = ET.parse(options.configfile).getroot()	
-	#print config.find('base_dir').text
+	
+	print "  ---> Config file is ", options.configfile
 
 	return options
 
@@ -236,7 +237,7 @@ def parseRegisterBlock(block):
 	print "    ---> Source file:      ", source
 	print "    ---> Destination file: ", dest
 	print "    ---> Output volume:    ", out_vol
-	print "    ---> Destination file: ", out_trans
+	print "    ---> Output trans:     ", out_trans
 
 	if block.get('type')=="flirt":
 		# TODO: Clean up.  Use os.path.join()
@@ -264,7 +265,28 @@ def parseRegisterBlock(block):
 			
 	elif block.get('type')=="robust":
 		print "    ---> Using mri_robust_register to perform registration"
-		print "    !!-> Registering via mri_robust_register not implemented yet"
+
+		rr_flags = blockConfFind(block, 'rr_flags', '')
+		print "    --->           rr_flags: ", rr_flags
+
+#mri_robust_register --mov ./autoreg_data/MPRAGE_2mm_iso.nii.gz --dst ./additional_data/MPRAGE_p2_2mm_iso_ref.nii.gz --lta ./autoreg_data/new2ref_mprage.lta --mapmov ./autoreg_data/MPRAGE_2mm_iso__refspace.nii.gz --iscale --satit				
+		rr_exec = [config.find('robust_register_binary').text]
+		rr_exec.append('--mov')
+		rr_exec.append(source)
+		rr_exec.append('--dst')
+		rr_exec.append(dest)
+		rr_exec.append('--lta')
+		rr_exec.append(out_trans)
+		rr_exec.append('--mapmov')
+		rr_exec.append(out_vol)
+		for flag in rr_flags.split():		
+			rr_exec.append(flag)
+
+		# Execute mri_robust_register
+		print "    ---> Executing mri_robust_register...", rr_exec		
+		with open(os.devnull, "w") as devnull:				
+			subprocess.call(rr_exec, stdout=devnull, stderr=devnull)
+
 	else:
 		print "    !!-> Unrecognized RegisterBlock type: ", block.get('type')
 
@@ -457,13 +479,51 @@ def parseVisBlock(block):
 	else:
 		print "    !!-> Unrecognized RegisterBlock type: ", block.get('type')
 
+
+def parseBiasBlock(block):
+	infile = getFullPathFromXMLblock(block.find('src'))
+	print "    ---> infile is", infile
+	outfile = getFullPathFromXMLblock(block.find('dest'))
+	print "    ---> outfile is", outfile
+
+	if block.get('type')=="mri_nu_correct":
+		mri_nu_correct_exec = [config.find('mri_nu_correct_binary').text]
+		mri_nu_correct_exec.append('--i')
+		mri_nu_correct_exec.append(infile)
+		mri_nu_correct_exec.append('--o')
+		mri_nu_correct_exec.append(outfile)
+		print "    ---> Executing mri_nu_correct", mri_nu_correct_exec
+		with open(os.devnull, "w") as devnull:				
+			subprocess.call(mri_nu_correct_exec, stdout=devnull, stderr=devnull)
+		#subprocess.call(mri_nu_correct_exec)
+	
+	else:
+		print "    !!-> Unrecognized BiasBlock type: ", block.get('type')
+	
+
+def parseFovBlock(block):
+	infile = getFullPathFromXMLblock(block.find('src'))
+	print "    ---> infile is", infile
+
+	if block.get('type')=="update_with_lta":
+		update_with_lta_exec = [config.find('update_with_lta').text]
+		update_with_lta_exec.append(infile)
+		print "    ---> Executing update_with_lta: ", update_with_lta_exec
+		#with open(os.devnull, "w") as devnull:				
+		#	subprocess.call(mri_nu_correct_exec, stdout=devnull, stderr=devnull)
+		print "#######################################################################"
+		subprocess.call(update_with_lta_exec)
+		print "#######################################################################"
+	else:
+		print "    !!-> Unrecognized BiasBlock type: ", block.get('type')
+
 def main():
 
 	# Get command line arguments
 	options = getOptions();
 	
 	# Parse xml command file
-	print "  ---> Parsing config file: " + options.file
+	print "  ---> Parsing instruction file: " + options.file
 	xml = ET.parse(options.file).getroot()
 	
 	initSubject(xml);
@@ -497,6 +557,12 @@ def main():
 			elif block.tag=="vis":
 				print "  ---> Parsing block ", num_blocks, "as a 'vis' block..."
 				parseVisBlock(block)
+			elif block.tag=="bias_correct":
+				print "  ---> Parsing block ", num_blocks, "as a 'bias_correct' block..."
+				parseBiasBlock(block)
+			elif block.tag=="fov":
+				print "  ---> Parsing block ", num_blocks, "as a 'fov' block..."
+				parseFovBlock(block)
 			else:
 				print "  ---> block", num_blocks, "has an unrecognized tag: ", block.tag, " skipping.."
 			print "  ---> Done parsing node ", num_blocks

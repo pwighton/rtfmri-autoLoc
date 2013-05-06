@@ -56,12 +56,13 @@
 	<convert_xfm_binary>/usr/lib/fsl/5.0/convert_xfm</convert_xfm_binary>
 
 	<!-- Location of the mri_robust_register binary -->	
-	<robust_register_binary>/home/pwighton/Desktop/freesurfer_dev_test/mri_robust_register</robust_register_binary>
+	<robust_register_binary>/home/rtfmri/freesurfer/bin/mri_robust_register</robust_register_binary>
 
-	<!-- Cofiguration parameters to pass to mri_robust_register these can be overridden in 
-             a specific registration block-->
-	<robust_register_cost>MI</robust_register_cost>
-	<robust_register_sensitivity>--satit</robust_register_sensitivity>
+	<!-- Location of the mri_nu_correct binary -->	
+	<mri_nu_correct_binary>/home/rtfmri/freesurfer/bin/mri_nu_correct.mni</mri_nu_correct_binary>
+
+	<!-- Location of the 'update_with_lta' script -->	
+	<update_with_lta>/home/rtfmri/AutoReg/util/update_with_lta.m</update_with_lta>
 
 	<!-- Port to broadcast our results on -->	
 	<broadcast_port>15002</broadcast_port>
