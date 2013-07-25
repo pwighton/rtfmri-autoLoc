@@ -1,0 +1,22 @@
+numvox = [128,128,88,1]';
+voxdim = [2.0, 2.0, 2.0, 1]';
+offset = [-3,-12,18,1]';
+orient = 'sag';
+theta = [0,0,12.5];
+patient = 'hfs';
+ack2D = false;
+
+fov1 = genFOV2(numvox, voxdim, orient, theta, offset, patient, true);
+
+% Then I moved the pineapple and took the same fov
+% fov1 == fov2
+
+fov2 = genFOV2(numvox, voxdim, orient, theta, offset, patient, true);
+
+
+%% Output from robust register (ras2-->ras1)
+
+r2r = [9.649875164031982e-01 1.618020236492157e-02 -2.617966234683990e-01 3.096015930175781e+00; -1.049886271357536e-02 9.996785521507263e-01 2.308632433414459e-02 1.247436523437500e+00; 2.620857059955597e-01 -1.952949166297913e-02 9.648470878601074e-01 4.293182373046875e+00; 0.000000000000000e+00 0.000000000000000e+00 0.000000000000000e+00 1.000000000000000e+00];
+
+offset2 = r2r * offset
+
