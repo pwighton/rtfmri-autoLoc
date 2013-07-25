@@ -1,0 +1,7 @@
+<data subject="test_20121019">
+
+	<receive type="murfi">
+		<xml>nfFouse02.xml</xml>		
+		<outfile filetype="autoreg">nfFouse02.nii.gz</outfile>
+	</receive>
+</data>

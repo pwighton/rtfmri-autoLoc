@@ -55,6 +55,9 @@
 	<!-- Location of the convert_xfm binary -->	
 	<convert_xfm_binary>/usr/lib/fsl/5.0/convert_xfm</convert_xfm_binary>
 
+	<!-- Location of FSL's cluster binary -->	
+	<cluster_binary>/usr/share/fsl/5.0/bin/cluster</cluster_binary>
+
 	<!-- Location of the mri_robust_register binary -->	
 	<robust_register_binary>/home/rtfmri/freesurfer/bin/mri_robust_register</robust_register_binary>
 
@@ -63,6 +66,9 @@
 
 	<!-- Location of the 'update_with_lta' script -->	
 	<update_with_lta>/home/rtfmri/AutoReg/util/update_with_lta.m</update_with_lta>
+
+	<!-- Location of FSL's cluster binary -->	
+	<genFouseFBparams>/home/rtfmri/AutoReg/util/rtFouseLoc_genFbParams.m</genFouseFBparams>	
 
 	<!-- Port to broadcast our results on -->	
 	<broadcast_port>15002</broadcast_port>

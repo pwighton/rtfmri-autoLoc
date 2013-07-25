@@ -1,0 +1,54 @@
+<data subject="test_20121019">
+
+
+
+	<receive type="murfi">
+		<xml>EPI_127TR_store.xml</xml>		
+		<outfile filetype="autoreg">EPI_127TR_3mm_72x72x31_2sTR.nii</outfile>
+	</receive>
+
+<!--
+	<register type="flirt">
+		<src filetype="ref">MNI152_T1_2mm.nii.gz</src>
+		<dest filetype="autoreg">MPRAGE_2mm_iso.nii</dest>
+		<out_vol filetype="autoreg">MNI_in_MPRAGEspace.nii.gz</out_vol>
+		<out_trans filetype="autoreg">mni2mprage.txt</out_trans>
+		<flirt_dof>-dof 12</flirt_dof>
+		<flirt_seartch_angles>-searchrx -90 90 -searchry -90 90 -searchrz -90 90</flirt_seartch_angles>
+		<flirt_cost>-cost mutualinfo</flirt_cost>
+		<flirt_searchcost>-searchcost mutualinfo</flirt_searchcost>
+	</register>
+
+	<register type="flirt">
+		<src filetype="autoreg">MPRAGE_2mm_iso.nii</src>
+		<dest filetype="autoreg">EPI_1TR_3mm_iso.nii</dest>
+		<out_vol filetype="autoreg">MPRAGE_in_EPIspace.nii.gz</out_vol>
+		<out_trans fileype="autoreg">mprage2epi.txt</out_trans>
+		<flirt_dof>-dof 6 -usesqform</flirt_dof>
+		<flirt_search_angles>-searchrx -90 90 -searchry -90 90 -searchrz -90 90</flirt_search_angles>
+		<flirt_cost>-cost corratio</flirt_cost>
+		<flirt_searchcost>-searchcost corratio</flirt_searchcost>
+	</register>
+
+
+	<register type="flirt">
+		<src filetype="autoreg">EPI_1TR_3mm_iso.nii</src>
+		<dest filetype="autoreg">MPRAGE_2mm_iso.nii</dest>
+		<out_vol filetype="autoreg">EPI_in_MPRAGEspace.nii.gz</out_vol>
+		<out_trans filetype="autoreg">epi2mprage.txt</out_trans>
+		<flirt_dof>-dof 6 -usesqform</flirt_dof>
+		<flirt_search_angles>-searchrx -90 90 -searchry -90 90 -searchrz -90 90</flirt_search_angles>
+		<flirt_cost>-cost corratio</flirt_cost>
+		<flirt_searchcost>-searchcost corratio</flirt_searchcost>
+	</register>
+
+	<register type="robust">
+		<src filetype="full">MNI152_T1_2mm.nii.gz</src>
+		<dest filetype="murfi_mask">MPRAGE_2mm_iso.nii</dest>
+		<outfile filetype="autoreg">mprage2mni.txt</outfile>
+	</register>
+
+	<broadcast>
+	</broadcast>
+-->
+</data>

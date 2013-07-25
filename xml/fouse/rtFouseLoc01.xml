@@ -1,0 +1,106 @@
+<data subject="test_20121019">
+	<receive type="murfi">
+		<xml>EPI_184TR_store.xml</xml>		
+		<outfile filetype="autoreg">rtFouseLoc01.nii.gz</outfile>
+	</receive>
+
+	<roi_gen type="feat">
+		<fsf>fouseFunLoc01_184TR.fsf</fsf>
+		<infile filetype="autoreg">rtFouseLoc01.nii.gz</infile>
+		<outfile filetype="autoreg" src="stats/zstat1.nii.gz">ffa_zstat_rtFouseLoc01.nii.gz</outfile>
+		<outfile filetype="autoreg" src="stats/zstat2.nii.gz">ppa_zstat_rtFouseLoc01.nii.gz</outfile>
+		<outfile filetype="autoreg" src="filtered_func_data.nii.gz">filtered_func_data.nii.gz</outfile>
+	</roi_gen>
+
+
+
+	<vis type="fslview">
+		<file filetype="autoreg">rtFouseLoc01.nii.gz</file>
+		<file filetype="autoreg">ffa_zstat_rtFouseLoc01.nii.gz</file>
+		<file filetype="autoreg">ppa_zstat_rtFouseLoc01.nii.gz</file>		
+		<comment>Visualize the result, Find an appropriate threshold</comment>
+	</vis>
+
+	<cluster>
+		<infile filetype="autoreg">ffa_zstat_rtFouseLoc01.nii.gz</infile>
+		<outfile filetype="autoreg">ffa_zstatCluster_rtFouseLoc01.nii.gz</outfile>
+		<prompt>Enter the threshold value for clustering FFA zstat:</prompt>
+	</cluster>
+
+	<cluster>
+		<infile filetype="autoreg">ppa_zstat_rtFouseLoc01.nii.gz</infile>
+		<outfile filetype="autoreg">ppa_zstatCluster_rtFouseLoc01.nii.gz</outfile>
+		<prompt>Enter the threshold value for clustering PPA zstat:</prompt>
+	</cluster>
+
+	<vis type="fslview">
+		<file filetype="autoreg">rtFouseLoc01.nii.gz</file>
+		<file filetype="autoreg">ffa_zstatCluster_rtFouseLoc01.nii.gz</file>
+		<file filetype="autoreg">ppa_zstatCluster_rtFouseLoc01.nii.gz</file>		
+		<comment>Visualize the result, look for suitable cluster #'s</comment>
+	</vis>
+
+	<math type="fslmaths">
+		<infile filetype="autoreg">ffa_zstat_rtFouseLoc01.nii.gz</infile>
+		<outfile filetype="autoreg">ffa_rtFouseLoc01.nii.gz</outfile>
+		<datatype>float</datatype>
+		<outdatatype>short</outdatatype>
+		<op flag="-thr">99.00</op>
+		<op flag="-bin"></op>
+		<comment>Just create a temporarily blank FFA mask</comment>
+	</math>
+
+	<math type="fslmaths">
+		<infile filetype="autoreg">ppa_zstat_rtFouseLoc01.nii.gz</infile>
+		<outfile filetype="autoreg">ppa_rtFouseLoc01.nii.gz</outfile>
+		<datatype>float</datatype>
+		<outdatatype>short</outdatatype>
+		<op flag="-thr">99.00</op>
+		<op flag="-bin"></op>
+		<comment>Just create a temporarily blank PPA mask</comment>
+	</math>
+
+	<cluster2mask>
+		<infile filetype="autoreg">ffa_zstatCluster_rtFouseLoc01.nii.gz</infile>
+		<outfile filetype="autoreg">ffa_rtFouseLoc01.nii.gz</outfile>
+		<prompt>Enter the suitable cluster numbers to create the FFA mask:</prompt>
+	</cluster2mask>
+
+	<cluster2mask>
+		<infile filetype="autoreg">ppa_zstatCluster_rtFouseLoc01.nii.gz</infile>
+		<outfile filetype="autoreg">ppa_rtFouseLoc01.nii.gz</outfile>
+		<prompt>Enter the suitable cluster numbers to create the PPA mask:</prompt>
+	</cluster2mask>
+
+	<math type="fslmaths">
+		<infile filetype="autoreg">ffa_rtFouseLoc01.nii.gz</infile>
+		<outfile filetype="murfi_mask">ffa_rtFouseLoc01.nii.gz</outfile>
+		<outdatatype>short</outdatatype>
+		<comment>Create the murfi-redable mask</comment>
+	</math>
+
+	<math type="fslmaths">
+		<infile filetype="autoreg">ppa_rtFouseLoc01.nii.gz</infile>
+		<outfile filetype="murfi_mask">ppa_rtFouseLoc01.nii.gz</outfile>
+		<outdatatype>short</outdatatype>
+		<comment>Create the murfi-redable mask</comment>
+	</math>
+
+	<vis type="fslview">
+		<file filetype="autoreg">rtFouseLoc01.nii.gz</file>
+		<file filetype="autoreg">ffa_rtFouseLoc01.nii.gz</file>
+		<file filetype="autoreg">ppa_rtFouseLoc01.nii.gz</file>
+		<file filetype="autoreg">ffa_zstatCluster_rtFouseLoc01.nii.gz</file>
+		<file filetype="autoreg">ppa_zstatCluster_rtFouseLoc01.nii.gz</file>
+		<file filetype="autoreg">ffa_zstat_rtFouseLoc01.nii.gz</file>
+		<file filetype="autoreg">ppa_zstat_rtFouseLoc01.nii.gz</file>		
+		<comment>Visualize the result, look for suitable cluster #'s</comment>
+	</vis>
+
+	<genFouseFBparams>
+		<infile filetype="autoreg">filtered_func_data.nii.gz</infile>
+		<ffamask filetype="autoreg">ffa_rtFouseLoc01.nii.gz</ffamask>
+		<ppamask filetype="autoreg">ppa_rtFouseLoc01.nii.gz</ppamask>
+		<outfile filetype="autoreg">fb_vals.txt</outfile>
+	</genFouseFBparams>
+</data>

@@ -517,6 +517,74 @@ def parseFovBlock(block):
 	else:
 		print "    !!-> Unrecognized BiasBlock type: ", block.get('type')
 
+# Prompts user for threshold value, then uses fsl's 'cluster' command to 
+def parseClusterBlock(block):
+	infile = getFullPathFromXMLblock(block.find('infile'))
+	print "    ---> infile is", infile
+	outfile = getFullPathFromXMLblock(block.find('outfile'))
+	print "    ---> outfile is", outfile
+	prompt = "    ===> "	
+	if block.find('prompt') != None:
+		prompt += block.find('prompt').text + " "
+	else:	
+		prompt += "Enter the threshold value for clustering: "
+		
+	thresh =  float(raw_input(prompt))
+	cluster_exec = [config.find('cluster_binary').text]
+	cluster_exec.append('-i')
+	cluster_exec.append(infile)
+	cluster_exec.append('-t')
+	cluster_exec.append(str(thresh))
+	cluster_exec.append('-o')
+	cluster_exec.append(outfile)
+	with open(os.devnull, "w") as devnull:				
+			subprocess.call(cluster_exec, stdout=devnull, stderr=devnull)
+
+def parseCluster2MaskBlock(block):
+	infile = getFullPathFromXMLblock(block.find('infile'))
+	print "    ---> infile is", infile
+	outfile = getFullPathFromXMLblock(block.find('outfile'))
+	print "    ---> outfile is", outfile
+	prompt = "    ===> "	
+	if block.find('prompt') != None:
+		prompt += block.find('prompt').text + " "
+	else:	
+		prompt += "Enter the threshold value for clustering: "
+	threshes =  raw_input(prompt)
+	vals = [int(x) for x in threshes.split()]
+	for val in vals:
+		fslmaths_exec = [config.find('fslmaths_binary').text]
+		fslmaths_exec.append('-dt')
+		fslmaths_exec.append('int')
+		fslmaths_exec.append(infile)
+		fslmaths_exec.append('-thr')
+		fslmaths_exec.append(str(val))
+		fslmaths_exec.append('-uthr')
+		fslmaths_exec.append(str(val))
+		fslmaths_exec.append('-add')
+		fslmaths_exec.append(outfile)
+		fslmaths_exec.append('-bin')
+		fslmaths_exec.append(outfile)
+		with open(os.devnull, "w") as devnull:				
+			subprocess.call(fslmaths_exec, stdout=devnull, stderr=devnull)
+
+def parseFouseFBparams(block):
+	infile = getFullPathFromXMLblock(block.find('infile'))
+	print "    ---> infile is", infile
+	outfile = getFullPathFromXMLblock(block.find('outfile'))
+	print "    ---> outfile is", outfile
+	ffamask = getFullPathFromXMLblock(block.find('ffamask'))
+	print "    ---> ffamask is", ffamask
+	ppamask = getFullPathFromXMLblock(block.find('ppamask'))
+	print "    ---> ppamask is", ppamask
+	
+	parseFouseFBparams_exec = [config.find('genFouseFBparams').text]
+	parseFouseFBparams_exec.append(infile)
+	parseFouseFBparams_exec.append(ffamask)
+	parseFouseFBparams_exec.append(ppamask)
+	with open(os.devnull, "w") as devnull:				
+		subprocess.call(parseFouseFBparams_exec)
+
 def main():
 
 	# Get command line arguments
@@ -563,6 +631,15 @@ def main():
 			elif block.tag=="fov":
 				print "  ---> Parsing block ", num_blocks, "as a 'fov' block..."
 				parseFovBlock(block)
+			elif block.tag=="cluster":
+				print "  ---> Parsing block ", num_blocks, "as a 'cluster' block..."
+				parseClusterBlock(block)
+			elif block.tag=="cluster2mask":
+				print "  ---> Parsing block ", num_blocks, "as a 'cluster2mask' block..."
+				parseCluster2MaskBlock(block)
+			elif block.tag=="genFouseFBparams":
+				print "  ---> Parsing block ", num_blocks, "as a 'genFouseFBparams' block..."
+				parseFouseFBparams(block)
 			else:
 				print "  ---> block", num_blocks, "has an unrecognized tag: ", block.tag, " skipping.."
 			print "  ---> Done parsing node ", num_blocks
