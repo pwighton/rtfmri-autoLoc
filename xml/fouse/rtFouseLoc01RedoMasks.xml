@@ -1,5 +1,5 @@
 <data subject="test_20121019">
-	
+
 	<vis type="fslview">
 		<file filetype="autoreg">rtFouseLoc01.nii.gz</file>
 		<file filetype="autoreg">ffa_zstat_rtFouseLoc01.nii.gz</file>
@@ -58,6 +58,17 @@
 		<prompt>Enter the suitable cluster numbers to create the PPA mask:</prompt>
 	</cluster2mask>
 
+	<vis type="fslview">
+		<file filetype="autoreg">rtFouseLoc01.nii.gz</file>
+		<file filetype="autoreg">ffa_rtFouseLoc01.nii.gz</file>
+		<file filetype="autoreg">ppa_rtFouseLoc01.nii.gz</file>
+		<file filetype="autoreg">ffa_zstatCluster_rtFouseLoc01.nii.gz</file>
+		<file filetype="autoreg">ppa_zstatCluster_rtFouseLoc01.nii.gz</file>
+		<file filetype="autoreg">ffa_zstat_rtFouseLoc01.nii.gz</file>
+		<file filetype="autoreg">ppa_zstat_rtFouseLoc01.nii.gz</file>		
+		<comment>Visualize the final result, edit manually if needed</comment>
+	</vis>
+
 	<math type="fslmaths">
 		<infile filetype="autoreg">ffa_rtFouseLoc01.nii.gz</infile>
 		<outfile filetype="murfi_mask">ffa_rtFouseLoc01.nii.gz</outfile>
@@ -72,21 +83,11 @@
 		<comment>Create the murfi-redable mask</comment>
 	</math>
 
-	<vis type="fslview">
-		<file filetype="autoreg">rtFouseLoc01.nii.gz</file>
-		<file filetype="autoreg">ffa_rtFouseLoc01.nii.gz</file>
-		<file filetype="autoreg">ppa_rtFouseLoc01.nii.gz</file>
-		<file filetype="autoreg">ffa_zstatCluster_rtFouseLoc01.nii.gz</file>
-		<file filetype="autoreg">ppa_zstatCluster_rtFouseLoc01.nii.gz</file>
-		<file filetype="autoreg">ffa_zstat_rtFouseLoc01.nii.gz</file>
-		<file filetype="autoreg">ppa_zstat_rtFouseLoc01.nii.gz</file>		
-		<comment>Visualize the result, look for suitable cluster #'s</comment>
-	</vis>
-
 	<genFouseFBparams>
 		<infile filetype="autoreg">filtered_func_data.nii.gz</infile>
 		<ffamask filetype="autoreg">ffa_rtFouseLoc01.nii.gz</ffamask>
 		<ppamask filetype="autoreg">ppa_rtFouseLoc01.nii.gz</ppamask>
 		<outfile filetype="autoreg">fb_vals.txt</outfile>
+		<comment>Calculate Feedback bar values</comment>
 	</genFouseFBparams>
 </data>

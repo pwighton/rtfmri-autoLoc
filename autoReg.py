@@ -311,6 +311,7 @@ def parseRoiGenBlock(block):
 		#   feat doesn't want extensions on this...
 		featdata = getFullPathFromXMLblock(block.find('infile'))
 		featdata = re.sub("\..*","",featdata)
+		print "    ---> Replacing ___FEATDATA___ with ", featdata
 		feat_fsf_custom = feat_fsf_custom.replace("___FEATDATA___", featdata)
 
 		# Write it to file
