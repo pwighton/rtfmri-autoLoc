@@ -25,10 +25,10 @@
 	<murfi_binary>/usr/local/bin/murfi</murfi_binary>
 
 	<!-- Location of the murfi directory -->	
-	<murfi_dir>/home/rtfmri/murfi_dev</murfi_dir>
+	<murfi_dir>/home/rtfmri/murfi</murfi_dir>
 
 	<!-- Location of the flirt binary -->	
-	<flirt_binary>/usr/lib/fsl/5.0/flirt</flirt_binary>
+	<flirt_binary>/usr/share/fsl/5.0/bin/flirt</flirt_binary>
 
 	<!-- Cofiguration parameters to pass to flirt these can be overridden in 
              a specific flirt registration block-->
@@ -38,22 +38,22 @@
 	<flirt_searchcost>-searchcost mutualinfo</flirt_searchcost>
 
 	<!-- Location of the fslmerge binary -->	
-	<fslmerge_binary>/usr/lib/fsl/5.0/fslmerge</fslmerge_binary>
+	<fslmerge_binary>/usr/share/fsl/5.0/bin/fslmerge</fslmerge_binary>
 
-	<!-- Location of the fslmerge binary -->	
-	<fslmaths_binary>/usr/lib/fsl/5.0/fslmaths</fslmaths_binary>
+	<!-- Location of the fslmaths binary -->	
+	<fslmaths_binary>/usr/share/fsl/5.0/bin/fslmaths</fslmaths_binary>
 
 	<!-- Location of the feat binary -->	
-	<feat_binary>/usr/lib/fsl/5.0/feat</feat_binary>
+	<feat_binary>/usr/share/fsl/5.0/bin/feat</feat_binary>
 
 	<!-- Location of the bet binary -->	
-	<bet_binary>/usr/lib/fsl/5.0/bet</bet_binary>
+	<bet_binary>/usr/share/fsl/5.0/bin/bet</bet_binary>
 
 	<!-- Location of the fslview binary -->	
 	<fslview_binary>/usr/bin/fslview</fslview_binary>
 
 	<!-- Location of the convert_xfm binary -->	
-	<convert_xfm_binary>/usr/lib/fsl/5.0/convert_xfm</convert_xfm_binary>
+	<convert_xfm_binary>/usr/share/fsl/5.0/bin/convert_xfm</convert_xfm_binary>
 
 	<!-- Location of FSL's cluster binary -->	
 	<cluster_binary>/usr/share/fsl/5.0/bin/cluster</cluster_binary>

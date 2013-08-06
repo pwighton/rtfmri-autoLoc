@@ -1,16 +1,17 @@
 <data subject="test_20121019">
+
 <!--
-!-->
+-->
 	<receive type="murfi">
-		<xml>EPI_184TR_store.xml</xml>		
+		<xml>EPI_188+4TR_store.xml</xml>		
 		<outfile filetype="autoreg">rtFouseLoc01.nii.gz</outfile>
 	</receive>
 
 	<roi_gen type="feat">
-		<fsf>fouseFunLoc01_184TR.fsf</fsf>
+		<fsf>fouseFunLoc01_188+4TR.fsf</fsf>
 		<infile filetype="autoreg">rtFouseLoc01.nii.gz</infile>
-		<outfile filetype="autoreg" src="stats/zstat1.nii.gz">ffa_zstat_rtFouseLoc01.nii.gz</outfile>
-		<outfile filetype="autoreg" src="stats/zstat2.nii.gz">ppa_zstat_rtFouseLoc01.nii.gz</outfile>
+		<outfile filetype="autoreg" src="stats/zstat1.nii.gz">ppa_zstat_rtFouseLoc01.nii.gz</outfile>
+		<outfile filetype="autoreg" src="stats/zstat2.nii.gz">ffa_zstat_rtFouseLoc01.nii.gz</outfile>
 		<outfile filetype="autoreg" src="filtered_func_data.nii.gz">filtered_func_data.nii.gz</outfile>
 	</roi_gen>
 
@@ -104,4 +105,5 @@
 		<outfile filetype="autoreg">fb_vals.txt</outfile>
 		<comment>Calculate Feedback bar values</comment>
 	</genFouseFBparams>
+
 </data>

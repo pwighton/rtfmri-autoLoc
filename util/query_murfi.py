@@ -24,6 +24,7 @@ class Murfi:
 			s.send(Q)
 			A = s.recv(1024)
 			s.close()
+			print A
 			return A
 		else:
 			return str(random.gauss(0,1))
@@ -86,24 +87,4 @@ class Murfi:
 			if math.isnan(self.FB_PPA[ii]):
 				break
 		return
-
-murfi_IP = '192.168.2.5'
-murfi_PORT = 15001
-murfi_TR = 127
-
-murfi_FAKE = False
-#murfi_FAKE = True
-
-murfi = Murfi(murfi_IP, murfi_PORT, murfi_TR, murfi_FAKE)
-
-#murfi.Q_ppa(1)
-#murfi.Q_ffa(1)
-
-print murfi.FB_FFA
-print murfi.FB_PPA
-
-murfi.update()
-
-print murfi.FB_FFA
-print murfi.FB_PPA 
 

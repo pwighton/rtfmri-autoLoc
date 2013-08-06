@@ -32,7 +32,7 @@
   <option name="onlyReadMoCo">   true </option>
   <option name="unmosaic">       true </option>
   <option name="tr">             2 </option>
-  <option name="measurements">   127 </option> 
+  <option name="measurements">   131 </option> 
   <option name="matrixSize">     72 </option>
   <option name="slices">         31 </option>
   <option name="voxdim1">        3 </option>
@@ -40,13 +40,17 @@
   <option name="voxdim3">        3 </option>
   <!-- PW 2012/10/23 misleading.. SliceGap is actually DistFactor -->
   <option name="sliceGap">       0.2 </option>
+  <!-- PW 2013/08/01 PaceWARP needs a few TRs to behave nicely -->
+  <option name="discard">        4 </option>
 </scanner>
 
+<!--
 <gui>
   <option name="disabled"> true </option>
 </gui>
+-->
 
-<oldgui>
+<gui>
   <option name="disabled">     false </option>
   
   <option name="winX">         1000 </option>
@@ -78,7 +82,7 @@
   
   <option name="negActivationSumID"> roi-weightedave </option>
   <option name="negActivationSumRoiID"> ppa </option>
-</oldgui>
+</gui>
 
 <infoserver>
   <option name="disabled"> false </option>
