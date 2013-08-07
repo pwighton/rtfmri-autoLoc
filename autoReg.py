@@ -524,11 +524,34 @@ def parseClusterBlock(block):
 	print "    ---> infile is", infile
 	outfile = getFullPathFromXMLblock(block.find('outfile'))
 	print "    ---> outfile is", outfile
-	prompt = "    ===> "	
+	prompt_base = "    ===> "	
+
+
+	# See the last example at http://fsl.fmrib.ox.ac.uk/fsl/fslwiki/Cluster
+	if block.get('type')=="grf":
+		copefile = getFullPathFromXMLblock(block.find('copefile'))
+		print "    ---> copefile is", copefile
+		maskfile = getFullPathFromXMLblock(block.find('maskfile'))
+		print "    ---> maskfile is", maskfile
+		smoothest_exec = [config.find('smoothest_binary').text]
+		smoothest_exec.append('-z')		
+		smoothest_exec.append(copefile)
+		smoothest_exec.append('-m')
+		smoothest_exec.append(maskfile)
+		p = subprocess.Popen(smoothest_exec, stdout=subprocess.PIPE)
+		out, err = p.communicate()
+		print "========================================================"
+		print out
+		print "========================================================"
+		prompt = prompt_base + "Enter DLH value: "
+		dlh =  float(raw_input(prompt))
+		prompt = prompt_base + "Enter volume value: "
+		volume =  float(raw_input(prompt))
+
 	if block.find('prompt') != None:
-		prompt += block.find('prompt').text + " "
+		prompt = prompt_base + block.find('prompt').text + " "
 	else:	
-		prompt += "Enter the threshold value for clustering: "
+		prompt = "Enter the threshold value for clustering: "
 		
 	thresh =  float(raw_input(prompt))
 	cluster_exec = [config.find('cluster_binary').text]
@@ -538,6 +561,14 @@ def parseClusterBlock(block):
 	cluster_exec.append(str(thresh))
 	cluster_exec.append('-o')
 	cluster_exec.append(outfile)
+	if block.get('type')=="grf":
+		cluster_exec.append('-p')
+		cluster_exec.append('0.05')
+		cluster_exec.append('-d')
+		cluster_exec.append(str(dlh))
+		cluster_exec.append('-v')
+		cluster_exec.append(str(volume))
+		
 	with open(os.devnull, "w") as devnull:				
 			subprocess.call(cluster_exec, stdout=devnull, stderr=devnull)
 

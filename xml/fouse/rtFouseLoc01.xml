@@ -12,7 +12,11 @@
 		<infile filetype="autoreg">rtFouseLoc01.nii.gz</infile>
 		<outfile filetype="autoreg" src="stats/zstat1.nii.gz">ppa_zstat_rtFouseLoc01.nii.gz</outfile>
 		<outfile filetype="autoreg" src="stats/zstat2.nii.gz">ffa_zstat_rtFouseLoc01.nii.gz</outfile>
+		<outfile filetype="autoreg" src="stats/cope1.nii.gz">ppa_cope_rtFouseLoc01.nii.gz</outfile>
+		<outfile filetype="autoreg" src="stats/cope2.nii.gz">ffa_cope_rtFouseLoc01.nii.gz</outfile>		
 		<outfile filetype="autoreg" src="filtered_func_data.nii.gz">filtered_func_data.nii.gz</outfile>
+		<outfile filetype="autoreg" src="mask.nii.gz">brain_mask.nii.gz</outfile>
+
 	</roi_gen>
 
 	<vis type="fslview">
@@ -22,15 +26,20 @@
 		<comment>Visualize the result, Find an appropriate threshold</comment>
 	</vis>
 
-	<cluster>
+
+	<cluster type="grf">
 		<infile filetype="autoreg">ffa_zstat_rtFouseLoc01.nii.gz</infile>
 		<outfile filetype="autoreg">ffa_zstatCluster_rtFouseLoc01.nii.gz</outfile>
+		<copefile filetype="autoreg">ffa_cope_rtFouseLoc01.nii.gz</copefile>
+		<maskfile filetype="autoreg">brain_mask.nii.gz</maskfile>
 		<prompt>Enter the threshold value for clustering FFA zstat:</prompt>
 	</cluster>
 
-	<cluster>
+	<cluster type="grf">
 		<infile filetype="autoreg">ppa_zstat_rtFouseLoc01.nii.gz</infile>
 		<outfile filetype="autoreg">ppa_zstatCluster_rtFouseLoc01.nii.gz</outfile>
+		<copefile filetype="autoreg">ppa_cope_rtFouseLoc01.nii.gz</copefile>
+		<maskfile filetype="autoreg">brain_mask.nii.gz</maskfile>
 		<prompt>Enter the threshold value for clustering PPA zstat:</prompt>
 	</cluster>
 

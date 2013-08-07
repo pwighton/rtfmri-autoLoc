@@ -58,6 +58,9 @@
 	<!-- Location of FSL's cluster binary -->	
 	<cluster_binary>/usr/share/fsl/5.0/bin/cluster</cluster_binary>
 
+	<!-- Location of FSL's smoothest binary -->	
+	<smoothest_binary>/usr/share/fsl/5.0/bin/smoothest</smoothest_binary>
+
 	<!-- Location of the mri_robust_register binary -->	
 	<robust_register_binary>/home/rtfmri/freesurfer/bin/mri_robust_register</robust_register_binary>
 

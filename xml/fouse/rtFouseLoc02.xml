@@ -1,0 +1,8 @@
+<data subject="test_20121019">
+<!--
+!-->
+	<receive type="murfi">
+		<xml>EPI_188+4TR_store.xml</xml>		
+		<outfile filetype="autoreg">rtFouseLoc02.nii.gz</outfile>
+	</receive>
+</data>
