@@ -124,7 +124,7 @@ set fmri(norm_yn) 0
 set fmri(perfsub_yn) 0
 
 # Highpass temporal filtering
-set fmri(temphp_yn) 1
+set fmri(temphp_yn) 0
 
 # Lowpass temporal filtering
 set fmri(templp_yn) 0
@@ -137,12 +137,12 @@ set fmri(stats_yn) 1
 
 # Carry out prewhitening?
 # PW 2013/07/19 Using a phantom causes FILM to not converge.  Disabling for now.  Prolly want to re-enable?
-set fmri(prewhiten_yn) 1
+set fmri(prewhiten_yn) 0
 
 # Add motion parameters to model
 # 0 : No
 # 1 : Yes
-set fmri(motionevs) 1
+set fmri(motionevs) 0
 set fmri(motionevsbeta) ""
 set fmri(scriptevsbeta) ""
 
