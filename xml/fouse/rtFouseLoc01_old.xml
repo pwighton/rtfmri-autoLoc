@@ -2,7 +2,6 @@
 
 <!--
 -->
-
 	<receive type="murfi">
 		<xml>EPI_188+4TR_store.xml</xml>		
 		<outfile filetype="autoreg">rtFouseLoc01.nii.gz</outfile>
